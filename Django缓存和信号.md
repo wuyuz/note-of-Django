@@ -27,19 +27,23 @@ crm+权限
 
   
 
-- settings
+- settings 配置
 
 ```python
 #将 debug_toolbar 添加到 INSTALL_APPS 中
 INSTALLED_APPS = [
+    ...
 	'debug_toolbar',
 ]
+
 #如果是本机调试，还在将127.0.0.1加入 INTERNAL_IPS
 INTERNAL_IPS = ("127.0.0.1",)
 #在中间件中加入DebugToolbarMiddleware
 MIDDLEWARE = [
+    ...
 	'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
 #配置jQuery的URL
 	#django-debug-toolbar 默认使用的是Google的地址，默认配置如下：
     JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
@@ -54,7 +58,7 @@ MIDDLEWARE = [
 ```python
 from django.conf import settings
 
-if settings.DEBUG:#
+if settings.DEBUG:#根据setting中的debug来判断，是否开启
     import debug_toolbar
 
     urlpatterns = [
@@ -62,9 +66,11 @@ if settings.DEBUG:#
                   ] + urlpatterns
 ```
 
+
+
 ### 2.缓存
 
-- 由于Django是动态网站，所有每次请求均会去数据进行相应的操作，当程序访问量大时，耗时必然会更加明显，最简单解决方式是使用：缓存，缓存将一个某个views的返回值保存至内存或者memcache中，5分钟内再有人来访问时，则不再去执行view中的操作，而是直接从内存或者memcache中之前缓存的内容拿到，并返回。
+- 由于Django是动态网站，所有每次请求均会去数据进行相应的操作，当程序访问量大时，耗时必然会更加明显，最简单解决方式是使用：缓存，缓存将一个某个views的返回值保存至内存或者memcache中，5分钟内再有人来访问时，则不再去执行view中的操作，而是直接从内存或者memcache中之前缓存的内容拿到，并返回。 
 
 - 开发调试--->起到占位作用，本身不具备缓存。等上线之后更改配置即可使用
 
@@ -169,13 +175,15 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
 #建立socket访问
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': 'unix:/tmp/memcached.sock',
     }
-}   
+}  
+
 #多个缓存ip和端口，类似分布式
 CACHES = {
     'default': {
@@ -428,7 +436,7 @@ seven {'signal': <django.dispatch.dispatcher.Signal object at 0x000001BCD6D82B38
 
 ```python
 1. 尽量不查对象，会跨表或多语句查询，用values直接取字段值，跨表一条语句，且结果为字典
-
+ 
     查询指定字段值时，尽量不用对象，而使用values直接取值
     def index(request):
         ret = models.Student.objects.all()  #获取所有对象
@@ -458,7 +466,7 @@ seven {'signal': <django.dispatch.dispatcher.Signal object at 0x000001BCD6D82B38
    只有在使用时才会查询数据库，而不是遇到查询语句就执行，比如html对象页面渲染
 ```
 
-
+  
 
 ### 5.库的配置
 
@@ -493,10 +501,12 @@ ret = model.Student.objects.all().using('db2')#查询db2库所有数据
 
 models.Student.object.using("default").create(name='xxoo')#往default库写入信息
 
+models.Student.object.using('db2').update()
+
 #db2查询name='ss'，并更改name,并保存在default库中
 obj = models.Stundet.objects.using('db2').get(name='ss')
 obj.name = "sha"
-obj.save(using="default")
+obj.save(using="default")  # 默认obj.save() 储存在db2中
 ```
 
 - 自动操作
@@ -533,7 +543,7 @@ DATABASE_ROUTERS=['myrouter.Router',]
 
 #### 3.分库分表
 
-- 分库：
+- 分库：  
 
 ```python
 #settings.py配置
@@ -590,6 +600,10 @@ cursor.execute("""select * from main.app_classes where id=%s""",[1,])
 row = cursor.fetchall()
 print(row)
 ```
+
+
+
+
 
 ### 6.CRM+RBAC
 

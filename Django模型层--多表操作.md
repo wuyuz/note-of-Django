@@ -166,7 +166,7 @@
 
   ​		创建完这个表，我们自己可以通过navicat工具来看看数据库里面的那些表，出版社这个表里面没有任何的关系字段，这种单表的数据，我们可以先添加几条数据，在进行下面的增删改查的操作。
 
-  ![1560349503278](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560349503278.png)
+  ![1560349503278](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560349503278.png)
 
 - ##### 注意事项
 
@@ -214,7 +214,7 @@
 
 - 操作前先简单的录入一些数据：还是create和save两个方法，和单表的区别就是看看怎么添加关联字段的数据
 
-  ![1560862150342](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560862150342.png)
+  ![1560862150342](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560862150342.png)
 
   
 
@@ -298,7 +298,7 @@
 
 - **一对多查询**（publish与book）
 
-  ![1560863734745](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560863734745.png)
+  ![1560863734745](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560863734745.png)
 
   - **正向查询**（按关系管理对象：publish):关联属性字段所在的表查询被关联表的记录就是正向查询，反之就是反向查询,这里是一对多的情况，但是我们的关系管理对象写在'多'的一方，所以这里每个book反而对应一个出版社。
 
@@ -323,7 +323,7 @@
 
 - **一对一查询**（author与authorDetail)
 
-  ![1560864461325](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560864461325.png)
+  ![1560864461325](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560864461325.png)
 
   - **正向查询**（按关系管理对象：authorDetail）：
 
@@ -345,7 +345,7 @@
 
 - **多对多查询**（author与book)
 
-  ![1560864979178](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560864979178.png)
+  ![1560864979178](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560864979178.png)
 
   - **正向查询**（按关系管理对象：author）：
 

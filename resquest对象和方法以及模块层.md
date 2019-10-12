@@ -127,59 +127,104 @@
     首先我们在函数体中单独使用HttpRequest.GET是会报错的，查看其源码可以发现，函数中request使用的方法都是有的，且HttpRequest的实例化，也就是说所有的request都是HttpRequest的实例化，在每个请求来的时候，wsgi.py会将所有的信息封装到request中（HttpRequest类中实例化）
     ```
   
+  - request.post想要获取数据的条件
+  
+    ```python
+    django request.POST / request.body
+        当request.POST没有值 需要考虑下面两个要求
+            1.如果请求头中的: Content-Type: application/x-www-form-urlencoded   request.POST中才会有值（才会去request.body中解析数据）
+            2.若1有，也不一定有值 必须有数据格式要求： name=alex&age=18&gender=男
+    
+    
+        如:
+            a. form表单提交 默认就会满足上诉的1和2
+                <form method...>
+                    input
+                </form>
+    
+            b. ajax提交
+                $.ajax({
+                    url:...
+                    type:POST,
+                    data:{
+                        name:alex,
+                        age=18,
+                    }     #默认也会满足上诉1和2  请求头默认为上述情况 内部数据格式会转为上述情况
+                })
+    
+               自定义ajax 情况一
+               $.ajax({
+                    url:...
+                    type:POST,
+                    headers:{'Content-Type':"application/json"}  #不同的请求头 导致request.POST获取不了数据 而request.body依旧存在数据
+                    data:{name:alex, age = 18}   #内部自动转换 name=alex&age=18
+    
+               }) #即body有值 POST无值
+    
+               自定义ajax 情况二
+               $.ajax({
+                    url:...
+                    type:POST,
+                    headers:{'Content-Type':"application/json"}  #不同的请求头 导致request.POST获取不了数据 而request.body依旧存在数据
+                    data:JSON.stringfy{name:alex, age = 18} #{name:alex,age:18}
+    
+               })  #body有值 POST无值
+               #从 request.body里获取数据 然后再通过json.loads(request.body)
+    ```
+  
     
   
   - **方法**：
   
-  ```
-  1.HttpRequest.get_host()
-    
-    　　根据从HTTP_X_FORWARDED_HOST（如果打开 USE_X_FORWARDED_HOST，默认为False）和 HTTP_HOST 头部信息返回请求的原始主机。
-       如果这两个头部没有提供相应的值，则使用SERVER_NAME 和SERVER_PORT，在PEP 3333 中有详细描述。
-    　　USE_X_FORWARDED_HOST：一个布尔值，用于指定是否优先使用 X-Forwarded-Host 首部，仅在代理设置了该首部的情况下，才可以被使用。
-    　　例如："127.0.0.1:8000"
-    　　注意：当主机位于多个代理后面时，get_host() 方法将会失败。除非使用中间件重写代理的首部。
-    
-    2.HttpRequest.get_full_path()
-    　　返回 path，如果可以将加上查询字符串。
-    　　例如："/music/bands/the_beatles/?print=true"
-    
-     
-    3.HttpRequest.get_signed_cookie(key, default=RAISE_ERROR, salt='', max_age=None)
-    　　返回签名过的Cookie 对应的值，如果签名不再合法则返回django.core.signing.BadSignature。
-    　　如果提供 default 参数，将不会引发异常并返回 default 的值。
-    　　可选参数salt 可以用来对安全密钥强力攻击提供额外的保护。max_age 参数用于检查Cookie 对应的时间戳以确保Cookie 的时间不会超过max_age 秒
-            >>> request.get_signed_cookie('name')
-            'Tony'
-            >>> request.get_signed_cookie('name', salt='name-salt')
-            'Tony' # 假设在设置cookie的时候使用的是相同的salt
-            >>> request.get_signed_cookie('non-existing-cookie')
-            ...
-            KeyError: 'non-existing-cookie'    # 没有相应的键时触发异常
-            >>> request.get_signed_cookie('non-existing-cookie', False)
-            False
-            >>> request.get_signed_cookie('cookie-that-was-tampered-with')
-            ...
-            BadSignature: ...    
-            >>> request.get_signed_cookie('name', max_age=60)
-            ...
-            SignatureExpired: Signature age 1677.3839159 > 60 seconds
-            >>> request.get_signed_cookie('name', False, max_age=60)
-            False
-                     
-    4.HttpRequest.is_secure()
-    　　如果请求时是安全的，则返回True；即请求通是过 HTTPS 发起的。
-    
-    
-    5.HttpRequest.is_ajax()
-    　　如果请求是通过XMLHttpRequest 发起的，则返回True，方法是检查 HTTP_X_REQUESTED_WITH 相应的首部是否是字符			  串'XMLHttpRequest'。
-    　　大部分现代的 JavaScript 库都会发送这个头部。如果你编写自己的 XMLHttpRequest 调用（在浏览器端），你必须手工设置这个值来让  is_ajax() 可以工作。
-    　　如果一个响应需要根据请求是否是通过AJAX 发起的，并且你正在使用某种形式的缓存例如Django 的 cache middleware， 
-       你应该使用 vary_on_headers('HTTP_X_REQUESTED_WITH') 装饰你的视图以让响应能够正确地缓存。
-  ```
+    ```python
+    1.HttpRequest.get_host()
+      
+      　　根据从HTTP_X_FORWARDED_HOST（如果打开 USE_X_FORWARDED_HOST，默认为False）和 HTTP_HOST 头部信息返回请求的原始主机。
+         如果这两个头部没有提供相应的值，则使用SERVER_NAME 和SERVER_PORT，在PEP 3333 中有详细描述。
+      　　USE_X_FORWARDED_HOST：一个布尔值，用于指定是否优先使用 X-Forwarded-Host 首部，仅在代理设置了该首部的情况下，才可以被使用。
+      　　例如："127.0.0.1:8000"
+      　　注意：当主机位于多个代理后面时，get_host() 方法将会失败。除非使用中间件重写代理的首部。
+      
+      2.HttpRequest.get_full_path()
+      　　返回 path，如果可以将加上查询字符串。
+      　　例如："/music/bands/the_beatles/?print=true"
+      
+       
+      3.HttpRequest.get_signed_cookie(key, default=RAISE_ERROR, salt='', max_age=None)
+      　　返回签名过的Cookie 对应的值，如果签名不再合法则返回django.core.signing.BadSignature。
+      　　如果提供 default 参数，将不会引发异常并返回 default 的值。
+      　　可选参数salt 可以用来对安全密钥强力攻击提供额外的保护。max_age 参数用于检查Cookie 对应的时间戳以确保Cookie 的时间不会超过max_age 秒
+              >>> request.get_signed_cookie('name')
+              'Tony'
+              >>> request.get_signed_cookie('name', salt='name-salt')
+              'Tony' # 假设在设置cookie的时候使用的是相同的salt
+              >>> request.get_signed_cookie('non-existing-cookie')
+              ...
+              KeyError: 'non-existing-cookie'    # 没有相应的键时触发异常
+              >>> request.get_signed_cookie('non-existing-cookie', False)
+              False
+              >>> request.get_signed_cookie('cookie-that-was-tampered-with')
+              ...
+              BadSignature: ...    
+              >>> request.get_signed_cookie('name', max_age=60)
+              ...
+              SignatureExpired: Signature age 1677.3839159 > 60 seconds
+              >>> request.get_signed_cookie('name', False, max_age=60)
+              False
+                       
+      4.HttpRequest.is_secure()
+      　　如果请求时是安全的，则返回True；即请求通是过 HTTPS 发起的。
+      
+      
+      5.HttpRequest.is_ajax()
+      　　如果请求是通过XMLHttpRequest 发起的，则返回True，方法是检查 HTTP_X_REQUESTED_WITH 相应的首部是否是字符			  串'XMLHttpRequest'。
+      　　大部分现代的 JavaScript 库都会发送这个头部。如果你编写自己的 XMLHttpRequest 调用（在浏览器端），你必须手工设置这个值来让  is_ajax() 可以工作。
+      　　如果一个响应需要根据请求是否是通过AJAX 发起的，并且你正在使用某种形式的缓存例如Django 的 cache middleware， 
+         你应该使用 vary_on_headers('HTTP_X_REQUESTED_WITH') 装饰你的视图以让响应能够正确地缓存。
+    ```
   
-
-
+    
+  
 
 ##### HttpRequest和QueryDict
 
@@ -216,7 +261,7 @@
   3、dp1 = QueryDict(mutable=True) #dp1此时可编辑
   ```
 
-  ![1564395593039](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1564395593039.png)
+  ![1564395593039](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1564395593039.png)
 
 
 
@@ -273,9 +318,9 @@
   ```python
   1、request.POST.getlist("hobby")  #可以同时取checkbox的多个被选中的值
   2、request.POST.urlencode()  #将QueryDict字典里的键值对编码成指定格式
-```
-  
-  
+  ```
+
+
 
 #### response对象
 
@@ -295,7 +340,9 @@
   del response['Content-Type']
   ```
 
-- **属性**
+
+
+- 属性
 
   ```
   HttpResponse.content：响应内容
@@ -343,7 +390,7 @@
 
   前端调试窗口就可以看到这个类型：
 
-  ![1558358589152](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558358589152.png)
+  ![1558358589152](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558358589152.png)
 
 - 更加简便的JsonResponse，默认就是返回content_type="application/json"。
 
@@ -464,11 +511,11 @@ def my_view(request):
 
 - **关于重定向，简单来说：**
 
-  ![1558401189884](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558401189884.png)
+  ![1558401189884](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558401189884.png)
   
   通过修改http协议的header部分，对浏览器下达重定向指令的，让浏览器对location中指定的url提出请求，使浏览器显示重定向网页的内容。
 
-![1558359466547](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558359466547.png)
+![1558359466547](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558359466547.png)
 
 ```
 301和302的区别：
@@ -752,7 +799,7 @@ def index(request):
   #总结：深度查询，就是不停的点点点就行了。
   ```
   
-  ![1558366930086](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558366930086.png)
+  ![1558366930086](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558366930086.png)
 
 
 
@@ -780,7 +827,7 @@ def index(request):
   <p>{{ num|add:100 }}</p>
   ```
 
-  ![1558367814579](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558367814579.png)
+  ![1558367814579](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558367814579.png)
 
 - **default**：如果一个变量是false或则为空，使用给定的默认值。否则，使用变量的值。例如：
 
@@ -796,7 +843,7 @@ def index(request):
   <p>{{ book_list|default:'没有任何书籍' }}</p>
   ```
 
-  ![1558368294206](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558368294206.png)
+  ![1558368294206](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558368294206.png)
 
 - **length**：返回值的长度。它对字符串和列表起作用。例如：
 
@@ -827,7 +874,7 @@ def index(request):
   <p>{{ file_size|filesizeformat }}</p>
   ```
 
-  ![1558368764595](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558368764595.png)
+  ![1558368764595](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558368764595.png)
 
 - **date** : 时间
 
@@ -845,7 +892,7 @@ def index(request):
   <p>{{ now|date:'Y-m-d H:i:s' }}</p>
   ```
 
-  ![1558368896780](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558368896780.png)
+  ![1558368896780](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558368896780.png)
 
 - **slice** ： 切片
 
@@ -865,7 +912,7 @@ def index(request):
   <p>{{ val|slice:'1:-1：2' }}</p>
   ```
 
-  ![1558369042223](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558369042223.png)
+  ![1558369042223](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558369042223.png)
 
 - **truncatechars** ：截断；如果字符串字符多于指定的字符数量，那么会被截断。截断的字符串将以可翻译的省略号序列（“...”）结尾。
 
@@ -884,7 +931,7 @@ def index(request):
   <p>{{ text|truncatechars:20 }}</p>
   ```
 
-  ![1558369165428](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558369165428.png)
+  ![1558369165428](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558369165428.png)
 
 - **safe** ： Django的模板中会对HTML标签和JS等语法标签进行自动转义，原因显而易见，这样是为了安全。但是有的时候我们可能不希望这些HTML元素被转义，比如我们做一个内容管理系统，后台添加的文章中是经过修饰的，这些修饰可能是通过一个类似于FCKeditor编辑加注了HTML修饰符的文本，如果自动转义的话显示的就是保护HTML标签的源文件。为了在Django中关闭HTML的自动转义有两种方式，如果是一个单独的变量我们可以通过过滤器“|safe”的方式告诉Django这段代码是安全的不必转义（防止XSS攻击）。比如：
 
@@ -903,7 +950,7 @@ def index(request):
   <p>{{ link }}</p>  #不加safe，就是一些文本
   ```
 
-  ![1558369307231](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558369307231.png)
+  ![1558369307231](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558369307231.png)
 
   加了safe：
 
@@ -911,7 +958,7 @@ def index(request):
   <p>{{ link|safe }}</p>
   ```
 
-  ![1558369336383](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558369336383.png)
+  ![1558369336383](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558369336383.png)
 
 - **cut ：**移除value中所有的与给出的变量相同的字符串
 
@@ -939,7 +986,7 @@ def index(request):
       return redirect('/login/')
   ```
 
-  ![1558435461458](C:\Users\RootUser\Desktop\知识点复习\Django\resquest对象和方法以及模块层.assets\1558435461458.png)
+  ![1558435461458](C:\Users\wanglixing\Desktop\知识点复习\Django\resquest对象和方法以及模块层.assets\1558435461458.png)
 
 
 

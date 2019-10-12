@@ -261,7 +261,7 @@ DATABASES = {
 
 **方法一**：在pycharm中的运行栏（Django项目中）中有一个Python Console的按钮，点击即可打开Django的shell脚本。或则在项目目录下在cmd中输入：`python manage.py shell`  也可以打开测试。
 
-![1561363446082](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561363446082.png)
+![1561363446082](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561363446082.png)
 
 
 

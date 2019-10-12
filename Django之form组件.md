@@ -62,6 +62,8 @@
        username = forms.CharField(label='用户名',min_length=6,widget=forms.TextInput(attrs={'class':'form-control'})) #form字段的名称写的是什么，那么前端生成input标签的时候，input标签的name属性的值就是什么
        pwd = forms.CharField(label='密码',min_length=6,widget=forms.PasswordInput(attrs={'class':'form-control'},render_value=True))    # label是相应的标签名，min_length是最小长度，widget是引入的组件其中，可以是用attr添加该标签的样式，render_value是否保存密码
   
+  --------------------------------------------------------------------
+   # views.py
    # 使用form组件实现注册方式
   def register2(request):
       form_obj = RegForm()
@@ -94,8 +96,6 @@
           <button>注册</button>
   </form>
   ```
-
-
 
 - **form组件的使用总结**：
 

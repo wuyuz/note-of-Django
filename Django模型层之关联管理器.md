@@ -153,7 +153,7 @@
 
   - set() : 先清空，在设置，编辑书籍时即可用到(对一条关联记录进行清空，再填充)
 
-    ![1560927504033](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560927504033.png)
+    ![1560927504033](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560927504033.png)
 
     ```
     注意：对于所有类型的关联字段，add()、create()、remove()和clear(),set()都会马上更新数据库。换句话说，在关联的任何一端，都不需要再调用save()方法。

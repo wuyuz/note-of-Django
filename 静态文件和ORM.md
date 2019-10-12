@@ -14,7 +14,7 @@
   ]
   ```
 
-  ![1558512331577](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558512331577.png)
+  ![1558512331577](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558512331577.png)
 
 - **第二步**：具体的使用，在static.html文件中（**第一种方式**）
 
@@ -41,7 +41,7 @@
 
   配置URL和视图函数后：
 
-  ![1558512352291](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558512352291.png)
+  ![1558512352291](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558512352291.png)
 
   
 
@@ -103,7 +103,7 @@
 
 - 静态文件是有执行顺序的，依次查找黑箱中的静态文件，如果我用到一个图片名，多个静态文件都有，此时就会触发最前一个静态文件里的此图片。
 
-  ![1560306877214](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560306877214.png)
+  ![1560306877214](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560306877214.png)
 
 
 
@@ -138,7 +138,7 @@
   ```
   
 
-![1558517844026](C:\Users\RootUser\Desktop\知识点复习\Django\静态文件和ORM.assets\1558517844026.png)
+![1558517844026](C:\Users\wanglixing\Desktop\知识点复习\Django\静态文件和ORM.assets\1558517844026.png)
 
 - ##### ORM的优点
 
@@ -164,7 +164,7 @@
 
 - **建议**：刚开始写ORM时，一定要对应SQL语句，去写ORM
 
-  ![1558518548625](C:\Users\RootUser\Desktop\知识点复习\Django\静态文件和ORM.assets\1558518548625.png)
+  ![1558518548625](C:\Users\wanglixing\Desktop\知识点复习\Django\静态文件和ORM.assets\1558518548625.png)
 
   从上图中可以知道，class的类属性和字段是对应的。 [decimal(10,2)表示最大长度为10位。小数点2位。那么整数部分，最大只能有8位。]
 
@@ -198,11 +198,11 @@
 
   - Pycharm的Mysql环境 ：
 
-    ![1558519351421](C:\Users\RootUser\Desktop\知识点复习\Django\静态文件和ORM.assets\1558519351421.png)
+    ![1558519351421](C:\Users\wanglixing\Desktop\知识点复习\Django\静态文件和ORM.assets\1558519351421.png)
 
   - 之后点击Mysql，进入输入连接的库、密码、用户名……（就可以连接了）
 
-    ![1558519461138](C:\Users\RootUser\Desktop\知识点复习\Django\静态文件和ORM.assets\1558519461138.png)
+    ![1558519461138](C:\Users\wanglixing\Desktop\知识点复习\Django\静态文件和ORM.assets\1558519461138.png)
 
     
 
@@ -275,7 +275,7 @@
   
 - 通过pycharm提供的功能来执行manage.py相关的指令：
   
-  ![1558522964544](C:\Users\RootUser\Desktop\知识点复习\Django\静态文件和ORM.assets\1558522964544.png)
+  ![1558522964544](C:\Users\wanglixing\Desktop\知识点复习\Django\静态文件和ORM.assets\1558522964544.png)
   
   在这个终端里，你就可以不用输入：python manage.py -opt了，直接输入：makemigrations/migrate就行了
   
@@ -317,7 +317,7 @@
         return HttpResponse('ok')
   ```
   
-  ![1558689016927](C:\Users\RootUser\Desktop\知识点复习\Django\静态文件和ORM.assets\1558689016927.png)
+  ![1558689016927](C:\Users\wanglixing\Desktop\知识点复习\Django\静态文件和ORM.assets\1558689016927.png)
   
 
   
@@ -496,7 +496,7 @@
         cname = MyCharField(max_length=25)
   ```
   
-  ![1560342583487](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560342583487.png)
+  ![1560342583487](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560342583487.png)
   
   
   
@@ -800,7 +800,7 @@
   我们通过与mysql建立连接，操作mysql数据时，其实是创建了一个临时对话框，就比如我们通过Pycharm来操作数据库（migrate操作等时，会打印一个警告：
   ```
 
-  ![1558595235078](C:\Users\RootUser\Desktop\知识点复习\Django\静态文件和ORM.assets\1558595235078.png)
+  ![1558595235078](C:\Users\wanglixing\Desktop\知识点复习\Django\静态文件和ORM.assets\1558595235078.png)
 
   这涉及到mysql的sql_mode设置的相关知识：[详细解释](https://www.cnblogs.com/clschao/articles/9962347.html)
 
@@ -831,13 +831,13 @@
 
   修改前：
 
-  ![1558595895208](C:\Users\RootUser\Desktop\知识点复习\Django\静态文件和ORM.assets\1558595895208.png)
+  ![1558595895208](C:\Users\wanglixing\Desktop\知识点复习\Django\静态文件和ORM.assets\1558595895208.png)
 
   
 
   修改后：
 
-  ![1558595860794](C:\Users\RootUser\Desktop\知识点复习\Django\静态文件和ORM.assets\1558595860794.png)
+  ![1558595860794](C:\Users\wanglixing\Desktop\知识点复习\Django\静态文件和ORM.assets\1558595860794.png)
 
   
   - 在Django中也可以通过设置数据库配置来完成解决上述问题：setting中

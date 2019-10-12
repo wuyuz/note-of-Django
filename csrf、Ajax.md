@@ -2,7 +2,7 @@
 
 **csrf**：Cross Site Request Forgery,跨站点伪造请求。
 
-![1561621029068](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561621029068.png)
+![1561621029068](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561621029068.png)
 
 - **举个例子**：
 
@@ -332,7 +332,7 @@
 2、当请求发出后，浏览器还可以进行其他操作，无需等待服务器的响应！
 ```
 
-![1561631857975](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561631857975.png)
+![1561631857975](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561631857975.png)
 
 - **Ajax的优点**：
 
@@ -440,7 +440,7 @@
 
   -  1、ajax里面写$(this)时要注意的问题：还有一点注意，如果你添加某些dom对象的时候，如果你想在不刷新页面的情况下来添加这个对象，那么你要注意，如果这个对象也需要绑定事件的话，你需要用on来给和他相同的标签对象来绑定事件。**可以使用箭头函数来避免this指向变化**
 
-  ![1561635206506](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561635206506.png)
+  ![1561635206506](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561635206506.png)
 
 
 
@@ -537,7 +537,7 @@
 
 - **Ajax 实现流程**：
 
-  ![1561636142177](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561636142177.png)
+  ![1561636142177](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561636142177.png)
 
   
 
@@ -659,7 +659,7 @@
 
     我们当然可以使用Network查看拼接数据：
 
-    ![1561639434084](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561639434084.png)
+    ![1561639434084](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561639434084.png)
 
     
 
@@ -667,7 +667,7 @@
 
   - `application/json`:application/json 这个 Content-Type 作为响应头大家肯定不陌生。实际上，现在越来越多的人把它作为请求头，用来告诉服务端消息主体是序列化后的 JSON 字符串。由于 JSON 规范的流行，除了低版本 IE 之外的各大浏览器都原生支持 JSON.stringify，服务端语言也都有处理 JSON 的函数，使用 JSON 不会遇上什么麻烦。
 
-    ![1561639802257](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561639802257.png)
+    ![1561639802257](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561639802257.png)
 
 
 
@@ -807,7 +807,6 @@
   //代码很简单，需要注意的是页面中没有用到form表单，那么怎么提交数据呢，答案是用FormData来模拟表单中的<input type="file" id="avatar">控件
   ```
   
-
 - ##### 基于图片上传
 
   ```
@@ -848,8 +847,6 @@
                       f.write(temp)
           return HttpResponse('ok')
   ```
-
-
 
 
 

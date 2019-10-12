@@ -18,7 +18,7 @@
 
 - 下面我们将加入中间件，重新绘制django流程图：
 
-  ![1561791949244](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561791949244.png)
+  ![1561791949244](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561791949244.png)
 
   不难发现中间件是必经之地，所以一些必要的逻辑可以写在中间件中。
 
@@ -33,7 +33,7 @@
 总结：中间件顾名思义，是介于request与response处理之间的一道处理过程，相对比较轻量级，并且在全局上改变django的输入与输出。因为改变的是全局，所以需要谨慎实用，用不好会影响到性能。
 ```
 
-![1561792429704](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561792429704.png)
+![1561792429704](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561792429704.png)
 
 #### 中间件源码部分
 
@@ -62,7 +62,7 @@
 
 -  当用户发起请求的时候会依次经过所有的的中间件，这个时候的请求时process_request,最后到达views的函数中，views函数处理后，在依次穿过中间件，这个时候是process_response（倒叙）,最后返回给请求者。
 
-  ![1561794453887](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561794453887.png)
+  ![1561794453887](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561794453887.png)
 
 **自定义一个中间件实列**：在项目中或者应用中随意创建一个文件夹（对应的在setting中配置的时候，从项目根目录进行查找到所在中间件的类），这里我在应用app下创建了一个mymiddle的文件，并在文件中创建了middleware.py文件
 
@@ -316,7 +316,7 @@ MD2里面的 process_response
 
 - **流程图1**：
 
-  ![1561822819230](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561822819230.png)
+  ![1561822819230](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561822819230.png)
 
 
 
@@ -389,7 +389,7 @@ MD2里面的 process_response
 
 - 图解：
 
-  ![1561915332465](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561915332465.png)
+  ![1561915332465](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561915332465.png)
 
 
 
@@ -631,4 +631,4 @@ MD2里面的 process_response
 
 - **综上五种方法的图解**：
 
-  ![1561893331463](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1561893331463.png)
+  ![1561893331463](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1561893331463.png)
