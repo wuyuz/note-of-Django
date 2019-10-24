@@ -43,11 +43,11 @@
 
 - 学会分析浏览器发送的消息（注意每一行都有\r\n，知道消息头结束有\r\n\r\n结束）
 
-  ![1557911721280](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1557911721280.png)
+  ![1557911721280](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1557911721280.png)
 
 - **注意：**但我们使用最简单的方式以字节流的形式给浏览器发送一段以utf-8编码的字符的时候，如：’哈哈哈‘，会发现会乱码，解决方案：
 
-  ![1560300747375](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560300747375.png)
+  ![1560300747375](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560300747375.png)
   
 - 下面我们写一个html文件，将给来请求的浏览器返回一个html文件
 
@@ -82,7 +82,7 @@
   </html>
   ```
 
-  ![1557913124315](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1557913124315.png)
+  ![1557913124315](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1557913124315.png)
 
   
 
@@ -90,7 +90,7 @@
 
 - 上面的html文件自带了css、js以及.ico文件(图标、图片)的样式，但在真正开发的文件中都是使用link来进行文件的引用，通过验证上例使用link引用，会使css、js失效，那么如何处理？
 
-  ![1557914158786](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1557914158786.png)
+  ![1557914158786](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1557914158786.png)
 
   ```html
   <link rel="stylesheet" href="test.css">
@@ -100,7 +100,7 @@
   当然我们可以使用网上的资源，这样link就会去网上找对应的资源，前提是能联网
   ```
 
-  ![1557915259956](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1557915259956.png)
+  ![1557915259956](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1557915259956.png)
 
 - 当我们直接在浏览器上保存某个页面的时候，随便一个页面，我们到页面上点击右键另存为，然后存到本地的一个目录下，你会发现这个页面的html、css、js、图片等文件都跟着保存下来了，我保存了一下博客园首页的页面。也就是说我们哪能去下载一个页面时，浏览器会自动打包（为支持这个html页面的各种相应文件，包括图片、css、js等），否则无法显示出效果。
 
@@ -163,7 +163,7 @@
   ```
   
 
-![1557916845429](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1557916845429.png)
+![1557916845429](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1557916845429.png)
 
 - ##### 函数加多线程版本
 
@@ -412,7 +412,7 @@
   ```
   
 
-![1557992417252](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1557992417252.png)
+![1557992417252](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1557992417252.png)
 
 
 
@@ -456,7 +456,7 @@
   #createtable()，还未开发完整，具体什么时候调用这个函数，以及传入的参数还未完善
   ```
 
-  ![1557995407593](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1557995407593.png)
+  ![1557995407593](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1557995407593.png)
 
 - 2、一个名为webauth.py 文件，用于验证用户输入的密码是否合法
 
@@ -604,7 +604,7 @@
   httpd.serve_forever()
   ```
 
-  ![1557999994397](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1557999994397.png)
+  ![1557999994397](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1557999994397.png)
 
   
 
@@ -800,7 +800,7 @@
 
 - C: controller  控制器   ——路由 传递指令  业务逻辑，url和views
 
-![1558058226286](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558058226286.png)
+![1558058226286](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558058226286.png)
 
 
 
@@ -814,7 +814,7 @@
 
 　　除了以上三层之外，还需要一个URL分发器，它的作用是将一个个URL的页面请求分发给不同的View处理，View再调用相应的Model和Template，MTV的响应模式如下所示：
 
-![1558058497526](C:\Users\RootUser\AppData\Roaming\Typora\typora-user-images\1558058497526.png)
+![1558058497526](C:\Users\wanglixing\AppData\Roaming\Typora\typora-user-images\1558058497526.png)
 
 ​		一般是用户通过浏览器向我们的服务器发起一个请求(request)，这个请求回去访问视图函数，（如果不涉及到数据调用，那么这个时候视图函数返回一个模板也就是一个网页给用户），视图函数调用模型，模型去数据库查找数据，然后逐级返回，视图函数把返回的数据填充到模板中空格中，最后返回网页给用户。
 
@@ -896,7 +896,7 @@
 
   - 状态代码的第一个数字代表当前响应的类型：
 
-    ![1560222902096](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560222902096.png)
+    ![1560222902096](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560222902096.png)
 
 - **URL**
 
@@ -918,21 +918,21 @@
     ```
 
 - **HTTP请求格式（请求协议）**
-  ​	![1560223539633](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560223539633.png)
+  ​	![1560223539633](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560223539633.png)
 
   下面使用POST方法来具体说明具体的表现：
 
-  ![1560223751808](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560223751808.png)
+  ![1560223751808](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560223751808.png)
 
 
 
 - **HTTP响应格式（响应协议）**
 
-  ![1560223882325](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560223882325.png)
+  ![1560223882325](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560223882325.png)
 
   下面是一个服务器收到请求后返回的响应格式
 
-  ![1560223936221](C:\Users\RootUser\Desktop\知识点复习\Django\gif\1560223936221.png)
+  ![1560223936221](C:\Users\wanglixing\Desktop\知识点复习\Django\gif\1560223936221.png)
 
 
 

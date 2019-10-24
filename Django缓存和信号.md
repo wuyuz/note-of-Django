@@ -284,7 +284,7 @@ CACHES = {
 
 - ### 作为 session backend 使用配置
 
-  - Django 默认可以使用任何 cache backend 作为 session backend, 将 django-redis 作为 session 储存后端不用安装任何额外的 backend
+  Django 默认可以使用任何 cache backend 作为 session backend, 将 django-redis 作为 session 储存后端不用安装任何额外的 backend
 
   ```
   SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -334,7 +334,7 @@ Database Wrappers
       print("执行post_save信号")
       print(sender,kwargs)
   
-  post_save.connect(callback)#信号连接，并调用回调函数
+  post_save.connect(callback) #信号连接，并调用回调函数
   ```
 
   - views.py
@@ -343,7 +343,7 @@ Database Wrappers
   def student_list(request):
       students = models.Student.objects.all()
       print(students)
-      models.Student.objects.create(name='xxoo')#创建一个对象，用于触发信号
+      models.Student.objects.create(name='xxoo')  #创建一个对象，用于触发信号
       return render(request,'stu.html',{"students":students})
   ```
 
@@ -357,7 +357,7 @@ Database Wrappers
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 @receiver(post_save)# django的model对象保存后，自动触发
-def callback(sender,**kwargs):
+def callback(sender,**kwargs):  # 这里的sender，是表示那个表的操作发起者，可以进行判断
     print("执行post_save信号")
     print(sender,kwargs)
 
@@ -394,7 +394,6 @@ pizza_done.connect(callback)
 
 #触发后打印结果：
 callback
-
 seven {'signal': <django.dispatch.dispatcher.Signal object at 0x000001BCD6D82B38>, 'toppings': 123, 'size': 456}
 
 ```
@@ -419,9 +418,49 @@ seven {'signal': <django.dispatch.dispatcher.Signal object at 0x000001BCD6D82B38
 触发信号：单独写文件，如果在视图函数写函数，当代码取消，不方便。如果单独写函数，虽然添加信号会繁琐，但功能不需要取消时候，就方便许多。
 ```
 
+#### 案例二：
+
+- 在项目下的\__init__.py文件中
+
+  ```python
+  from django.db.models.signals import post_save
+  def callback(sender,**kwargs):
+      print("执行post_save信号")
+      print(sender,kwargs.get('instance'))  #<class 'app.models.Student'> sss
+  
+  post_save.connect(callback) #信号连接，并调用回调函数
+  ```
+
+- 在models.py文中
+
+  ```python
+  class Student(models.Model):
+      name = models.CharField(max_length=10)
+      password = models.CharField(max_length=10)
+  
+      def __str__(self):
+          return self.name[0]
+  ```
+
+- 在views.py文件中
+
+  ```python
+  from django.http import HttpResponse
+  from .models import Student
+  from django.views.decorators.csrf import csrf_exempt
+  
+  @csrf_exempt
+  def test(requset):
+      obj = Student.objects.create(**requset.POST)
+      print(obj)
+      return HttpResponse('OK')
+  ```
+
+  
 
 
-### 4.orm性能相关
+
+### 4.ORM性能相关
 
 - 尽量不用对象进行查询，多用values
 - select_related('关联外键字段')   连表查询    用于多对一，一对一
@@ -472,6 +511,8 @@ seven {'signal': <django.dispatch.dispatcher.Signal object at 0x000001BCD6D82B38
 
 #### 1.读写分离
 
+ 主要目的：单个数据库进行读写操作频繁，降低速度，增加服务器读写数据库压力，为了解决这一问题，对数据库进行读写分离，将大大提升项目的性能。其基本原理是：让主数据库处理事务性的增删改查，而从数据库处理查询操作，当主数据库因一些事务性操作导致数据变更后，同步更新到其他读库。写库一个，读库可以有多个。采用日志同步的方式实现主从同步。 
+
 - settings配置
 
 ```python
@@ -490,7 +531,6 @@ DATABASES = {
 
 python3 manage.py makemigrations   #生成迁移文件
 python3 manage.py migrate --database db2 #db2数据库迁移
-
 
 ```
 
@@ -522,7 +562,6 @@ class Router:
 		return "default"
 #settings.py配置
 DATABASE_ROUTERS=['myrouter.Router',]
-
 ```
 
 #### 2.一主多从

@@ -80,6 +80,7 @@ class BookInfo(models.Model):
     btitle = models.CharField(max_length=20)
     bpub_date = models.DateTimeField()
     New_Manager = models.Manager()              #BookInfo类定义了新的管理器对象New_Manager
+    
     def __str__(self):
         return self.btitle
 
@@ -154,9 +155,6 @@ class New_Manager(models.Manager):
         return super(New_Manager,self).get_queryset().filter(IsDelete=False)
 
 #默认情况下有如下使用方式BookInfo.objects.filter() 
-
-
-
 
 class BookInfo(models.Model):
     btitle = models.CharField(max_length=20)
