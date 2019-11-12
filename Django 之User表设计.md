@@ -54,3 +54,58 @@
   ```
 
   
+
+#### 确定 User Model
+
+ 我们推荐一下方式来确定某一django项目使用的user model: 
+
+```python
+    # 使用默认User model时
+    >>> from django.contrib.auth import get_user_model
+    >>> get_user_model()
+    <class 'django.contrib.auth.models.User'>
+
+    # 使用自定义User model时
+    >>> from django.contrib.auth import get_user_model
+    >>> get_user_model()
+    <class 'xxx.models.UserProfile'>
+```
+
+#### 方法一：使用settings.AUTH_USER_MODEL 
+
+自从django 1.5之后, 用户可以自定义User model了, 如果需要外键使用user model, 官方推荐的方法如下，在settings中设置AUTH_USER_MODEL:
+
+```python
+# settings.py
+# 格式为 "<django_app名>.<model名>"
+AUTH_USER_MODEL = "myapp.NewUser"
+```
+
+在models.py中使用
+
+```python
+# models.py
+from django.conf import settings
+from django.db import models
+
+class Article(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    title = models.CharField(max_length=255)
+```
+
+不要忘了在settings.py中设置:
+
+```
+ AUTH_USER_MODEL = "myapp.NewUser"
+```
+
+#### 方法2: 扩展 AbstractBaseUser类
+
+AbstractBaseUser中只含有3个field: password, last_login和is_active. 如果你对django user model默认的first_name, last_name不满意, 或者只想保留默认的密码储存方式, 则可以选择这一方式.
+
+#### 方法3: 使用OneToOneField
+
+如果你想建立一个第三方模块发布在PyPi上, 这一模块需要根据用户储存每个用户的额外信息. 或者我们的django项目中希望不同的用户拥有不同的field, 有些用户则需要不同field的组合, 且我们使用了方法1或方法2:
+
+更多知识： https://www.jianshu.com/p/b993f4feff83 
+
